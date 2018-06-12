@@ -2,11 +2,7 @@ import * as React from 'react'
 import './App.css'
 import { BindKeyboardToList } from './bindKeyboardToList/bindKeyboardToList'
 
-interface IState {
-  itemSelected: number | null
-}
-
-class App extends React.Component<{}, IState> {
+class App extends React.Component<{}> {
 
   private array: number[] = [
     0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
@@ -15,30 +11,22 @@ class App extends React.Component<{}, IState> {
     0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
   ]
 
-  constructor() {
-    super({})
-    this.state = { itemSelected: null }
-  }
-
   public render() {
 
     return (
-      <div>
-        <BindKeyboardToList list={this.array} select={this.handleSelect}>
-          {this.array.map((item: number, ix: number) => {
-            const className = `AppLine ${ this.state.itemSelected === ix ? 'selected' : ''}`
-            return (
-              <div key={ix} className={className}>{item}</div>
-            )
-          })}
-        </BindKeyboardToList>
-      </div>
+      <BindKeyboardToList selectItemNo={this.selectItemNo} lineClass={'.AppLine'}>
+        {this.array.map((item: number, ix: number) => {
+          return (
+            <div key={ix} tabIndex={ix + 1} className="AppLine">{item}</div>
+          )
+        })}
+      </BindKeyboardToList>
     )
 
   }
 
-  private handleSelect = (itemSelected: number): void => {
-    this.setState({ itemSelected })
+  private selectItemNo = (item: number) => {
+    window.console.log(this.array[item])
   }
 }
 

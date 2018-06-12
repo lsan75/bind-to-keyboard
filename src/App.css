@@ -1,9 +1,20 @@
+.AppContent {
+  height: 350px;
+  overflow-y: auto;
+  position: relative;
+  transition: transform 150ms;
+}
 .AppLine {
   background: #eee;
   border-bottom: 1px solid #fff;
-  padding: 1rem;
+  padding: 0 1rem;
   height: 64px;
 }
-  .AppLine.selected {
+  .AppLine:focus {
     background: #aaa;
+    outline: none;
+  }
+  .AppLine:hover {
+    background: #aaa;
+    cursor: pointer;
   }
