@@ -1,16 +1,8 @@
-/**
- * Usage :
- * - provide elements inside <BindKeyboardToList />
- * - set a tabIndex to each element
- * - provide a data-value unique id of elements to be bound to keyboard events
- * - data-value must be set on a native HTMLElement
- * - selectItem function binds a function to be executed on Enter and returns the line number selected
- */
-
 import * as React from 'react'
 
 interface IProps {
   selectItem: (item: number) => void
+  resetList?: () => void
   length: number
   className?: string
 }
@@ -37,11 +29,13 @@ export class BindKeyboardToList extends React.Component<IProps, IState> {
   public componentDidMount() {
     window.addEventListener('keydown', this.handleOnKeyDown)
     window.addEventListener('mousemove', this.resetPosition)
+    window.addEventListener('click', this.onEnter)
   }
 
   public componentWillUnmount() {
     window.removeEventListener('keydown', this.handleOnKeyDown)
     window.removeEventListener('mousemove', this.resetPosition)
+    window.removeEventListener('click', this.onEnter)
   }
 
   public render() {
@@ -55,14 +49,16 @@ export class BindKeyboardToList extends React.Component<IProps, IState> {
 
   private handleOnKeyDown = (e: KeyboardEvent) => {
 
+    // avoid scrolling on keydown
     e.preventDefault()
 
     const { currentPosition } = this.state
-    const { length } = this.props
+    const { length, resetList } = this.props
 
     if (!length) { return }
 
     if (e.key === KEYS.DOWN) {
+      if (currentPosition === -1 && resetList) { resetList() }
       const position = currentPosition === length - 1 ? length - 1 : currentPosition + 1
       this.changePosition(position)
     }
@@ -74,9 +70,16 @@ export class BindKeyboardToList extends React.Component<IProps, IState> {
     }
 
     if (e.key === KEYS.ENTER && currentPosition !== -1) {
-      this.props.selectItem(currentPosition)
-      this.resetPosition()
+      this.onEnter()
     }
+  }
+
+  private onEnter = () => {
+    const { currentPosition } = this.state
+    if (currentPosition === -1) { return }
+
+    this.resetPosition()
+    this.props.selectItem(currentPosition)
   }
 
   private changePosition = (currentPosition: number) => {
@@ -89,9 +92,12 @@ export class BindKeyboardToList extends React.Component<IProps, IState> {
   }
 
   private resetPosition = () => {
-    const formerPosition = this.state.currentPosition
+    const { currentPosition } = this.state
+    if (currentPosition === -1) { return }
+
+    const formerPosition = currentPosition
     this.setState({ currentPosition: -1 }, () => {
-      if (this.parent && formerPosition > -1) {
+      if (this.parent) {
         const item: HTMLElement = this.parent.querySelector(`[data-index="${formerPosition}"]`) as HTMLElement
         item.blur()
       }
