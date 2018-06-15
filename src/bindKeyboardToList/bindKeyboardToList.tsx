@@ -12,6 +12,7 @@ import * as React from 'react'
 interface IProps {
   selectItem: (item: number) => void
   length: number
+  className?: string
 }
 
 interface IState {
@@ -44,9 +45,9 @@ export class BindKeyboardToList extends React.Component<IProps, IState> {
   }
 
   public render() {
-    const { children } = this.props
+    const { children, className } = this.props
     return (
-      <div className="AppContent" ref={el => this.parent = el}>
+      <div className={className} ref={el => this.parent = el}>
         {children}
       </div>
     )
@@ -54,7 +55,6 @@ export class BindKeyboardToList extends React.Component<IProps, IState> {
 
   private handleOnKeyDown = (e: KeyboardEvent) => {
 
-    // prevent parent scrolling
     e.preventDefault()
 
     const { currentPosition } = this.state

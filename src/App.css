@@ -1,7 +1,5 @@
 .AppContent {
   overflow-y: auto;
-  position: relative;
-  transition: transform 150ms;
 }
 .AppLine {
   background: #eee;
