@@ -39,7 +39,7 @@ class App extends React.Component<{}> {
   }) => {
 
     return <div style={style} key={key}>
-      <BindKeyboardToListLine identifier={String(index)} className={'AppLine'}>
+      <BindKeyboardToListLine index={index} className={'AppLine'}>
         {this.array[index].id}
       </BindKeyboardToListLine>
     </div>

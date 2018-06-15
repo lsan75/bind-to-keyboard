@@ -1,7 +1,7 @@
 import * as React from 'react'
 
 interface ILineProps {
-  identifier: string
+  index: number
   className?: string
 }
 
@@ -12,9 +12,9 @@ export class BindKeyboardToListLine extends React.Component<ILineProps> {
   }
 
   public render() {
-    const { children, className, identifier } = this.props
+    const { children, className, index } = this.props
     return <div
-      data-value={identifier}
+      data-index={index}
       className={className}
       tabIndex={0}
     >

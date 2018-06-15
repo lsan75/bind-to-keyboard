@@ -82,7 +82,7 @@ export class BindKeyboardToList extends React.Component<IProps, IState> {
   private changePosition = (currentPosition: number) => {
     this.setState({ currentPosition }, () => {
       if (this.parent) {
-        const item: HTMLElement = this.parent.querySelector(`[data-value="${currentPosition}"]`) as HTMLElement
+        const item: HTMLElement = this.parent.querySelector(`[data-index="${currentPosition}"]`) as HTMLElement
         item.focus()
       }
     })
@@ -92,7 +92,7 @@ export class BindKeyboardToList extends React.Component<IProps, IState> {
     const formerPosition = this.state.currentPosition
     this.setState({ currentPosition: -1 }, () => {
       if (this.parent && formerPosition > -1) {
-        const item: HTMLElement = this.parent.querySelector(`[data-value="${formerPosition}"]`) as HTMLElement
+        const item: HTMLElement = this.parent.querySelector(`[data-index="${formerPosition}"]`) as HTMLElement
         item.blur()
       }
     })
